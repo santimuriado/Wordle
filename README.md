@@ -14,6 +14,12 @@ in the correct position the letter will turn yellow. If the letter doesn't belon
 
 As any react application to run the program:
 
-        npm start
+First install node-modules using;
+
+        npm install
         
+Then run it like any react app.
+
+        npm start
+
 Enjoy the game.
