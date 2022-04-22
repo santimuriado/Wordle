@@ -1,75 +1,75 @@
+/* TODO: Make the gameOver stats a popup.
+         Finish converting to redux */
+
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import { boardDefault, generateWordSet } from "./Words";
 import { React, useState, createContext, useEffect } from "react";
 import GameOver from "./components/GameOver";
+import {
+	increaseAttempt,
+	increaseLetterPos,
+	decreaseLetterPos,
+	resetLetterPos,
+} from "./features/currentAttemptSlice";
+import { setGameOver, setGuessedWord } from "./features/gameOverSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const AppContext = createContext();
 
 function App() {
+	const { attempt, letterPos } = useSelector((store) => store.currentAttempt);
+	const { gameOver } = useSelector((store) => store.gameOver);
+	const dispatch = useDispatch();
 	const [board, setBoard] = useState(boardDefault);
-	const [currAttempt, setCurrAttempt] = useState({
-		attempt: 0,
-		letterPos: 0,
-	});
 	const [wordSet, setWordSet] = useState(new Set());
-	const [disabledLetters, setDisabledLetters] = useState([]);
-	const [almostLetters, setAlmostLetters] = useState([]);
-	const [correctLetters, setCorrectLetters] = useState([]);
-	const [gameOver, setGameOver] = useState({
-		gameOver: false,
-		guessedWord: false,
-	});
 	const [correctWord, setCorrectWord] = useState("");
 
 	useEffect(() => {
 		generateWordSet().then((words) => {
 			setWordSet(words.wordSet);
 			setCorrectWord(words.todaysWord);
+			console.log(words.todaysWord);
 		});
 	}, []);
 
 	const onSelectLetter = (keyVal) => {
-		if (currAttempt.letterPos > 4) return;
+		if (letterPos > 4) return;
 		const currentBoard = [...board];
-		currentBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
+		currentBoard[attempt][letterPos] = keyVal;
 		setBoard(currentBoard);
-		setCurrAttempt({
-			...currAttempt,
-			letterPos: currAttempt.letterPos + 1,
-		});
+		dispatch(increaseLetterPos());
 	};
 	const onDelete = () => {
-		if (currAttempt.letterPos === 0) return;
+		if (letterPos === 0) return;
 		const currentBoard = [...board];
-		currentBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "";
+		currentBoard[attempt][letterPos - 1] = "";
 		setBoard(currentBoard);
-		setCurrAttempt({
-			...currAttempt,
-			letterPos: currAttempt.letterPos - 1,
-		});
+		dispatch(decreaseLetterPos());
 	};
 	const onEnter = () => {
-		if (currAttempt.letterPos !== 5) return;
+		if (letterPos !== 5) return;
 
 		let currWord = "";
 		for (let i = 0; i < 5; i++) {
-			currWord += board[currAttempt.attempt][i];
+			currWord += board[attempt][i];
 		}
 
 		if (wordSet.has(currWord.toLowerCase())) {
-			setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+			dispatch(increaseAttempt());
+			dispatch(resetLetterPos());
 		} else {
 			alert("Word not found");
 		}
 
 		if (currWord.toLowerCase() === correctWord) {
-			setGameOver({ gameOver: true, guessedWord: true });
+			dispatch(setGameOver());
+			dispatch(setGuessedWord());
 			return;
 		}
-		if (currAttempt.attempt === 5) {
-			setGameOver({ gameOver: true, guessedWord: false });
+		if (attempt === 5) {
+			dispatch(setGameOver());
 		}
 	};
 	return (
@@ -81,24 +81,24 @@ function App() {
 				value={{
 					board,
 					setBoard,
-					currAttempt,
-					setCurrAttempt,
+					/* currAttempt,
+					setCurrAttempt, */
 					onSelectLetter,
 					onDelete,
 					onEnter,
 					correctWord,
-					disabledLetters,
-					setDisabledLetters,
-					gameOver,
-					setGameOver,
-					almostLetters,
+					/* disabledLetters,
+					setDisabledLetters, */
+					/* gameOver,
+					setGameOver, */
+					/* almostLetters,
 					setAlmostLetters,
 					correctLetters,
-					setCorrectLetters,
+					setCorrectLetters, */
 				}}>
 				<div className="game">
 					<Board />
-					{gameOver.gameOver ? <GameOver /> : <Keyboard />}
+					{gameOver ? <GameOver /> : <Keyboard />}
 				</div>
 			</AppContext.Provider>
 		</div>

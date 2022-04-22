@@ -1,15 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
+import { addCorrectLetter } from "../features/correctLettersSlice";
+import { addAlmostLetter } from "../features/almostLettersSlice";
+import { addDisabledLetter } from "../features/disabledLettersSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Letter({ letterPos, attemptVal }) {
-	const {
-		board,
-		correctWord,
-		currAttempt,
-		setDisabledLetters,
-		setAlmostLetters,
-		setCorrectLetters,
-	} = useContext(AppContext);
+	const dispatch = useDispatch();
+	const { attempt } = useSelector((store) => store.currentAttempt);
+	const { board, correctWord } = useContext(AppContext);
 	const letter = board[attemptVal][letterPos];
 
 	const correct = correctWord.toUpperCase()[letterPos] === letter;
@@ -17,20 +16,20 @@ function Letter({ letterPos, attemptVal }) {
 		!correct && letter !== "" && correctWord.toUpperCase().includes(letter);
 
 	const letterState =
-		currAttempt.attempt > attemptVal &&
+		attempt > attemptVal &&
 		(correct ? "correct" : almost ? "almost" : "error");
 
 	useEffect(() => {
 		if (letter !== "" && correct && !almost) {
-			setCorrectLetters((prev) => [...prev, letter]);
+			dispatch(addCorrectLetter(letter));
 		}
 		if (letter !== "" && !correct && almost) {
-			setAlmostLetters((prev) => [...prev, letter]);
+			dispatch(addAlmostLetter(letter));
 		}
 		if (letter !== "" && !correct && !almost) {
-			setDisabledLetters((prev) => [...prev, letter]);
+			dispatch(addDisabledLetter(letter));
 		}
-	}, [currAttempt.attempt]);
+	}, [attempt]);
 
 	return (
 		<div className="letter" id={letterState}>

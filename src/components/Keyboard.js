@@ -1,20 +1,18 @@
 import React, { useCallback, useEffect, useContext } from "react";
 import { AppContext } from "../App";
 import Key from "./Key";
+import { useSelector } from "react-redux";
 
 function Keyboard() {
 	const keys1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 	const keys2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
 	const keys3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
-	const {
-		onSelectLetter,
-		onDelete,
-		onEnter,
-		disabledLetters,
-		almostLetters,
-		correctLetters,
-	} = useContext(AppContext);
+	const { correctLetters } = useSelector((store) => store.correctLetters);
+	const { almostLetters } = useSelector((store) => store.almostLetters);
+	const { disabledLetters } = useSelector((store) => store.disabledLetters);
+
+	const { onSelectLetter, onDelete, onEnter } = useContext(AppContext);
 
 	const handleKeyboard = useCallback((event) => {
 		if (event.key === "Enter") {
@@ -53,6 +51,7 @@ function Keyboard() {
 				{keys1.map((key) => {
 					return (
 						<Key
+							key={key}
 							keyVal={key}
 							disabled={disabledLetters.includes(key)}
 							almost={almostLetters.includes(key)}
@@ -65,6 +64,7 @@ function Keyboard() {
 				{keys2.map((key) => {
 					return (
 						<Key
+							key={key}
 							keyVal={key}
 							disabled={disabledLetters.includes(key)}
 							almost={almostLetters.includes(key)}
@@ -78,6 +78,7 @@ function Keyboard() {
 				{keys3.map((key) => {
 					return (
 						<Key
+							key={key}
 							keyVal={key}
 							disabled={disabledLetters.includes(key)}
 							almost={almostLetters.includes(key)}

@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { AppContext } from "../App";
 
 function GameOver() {
-	const { gameOver, currAttempt, correctWord } = useContext(AppContext);
+	const { attempt } = useSelector((store) => store.currentAttempt);
+	const { guessedWord } = useSelector((store) => store.gameOver);
+	const { correctWord } = useContext(AppContext);
 	return (
 		<div className="gameOver">
-			<h3>{gameOver.guessedWord ? "Correctly guessed" : "Failed"}</h3>
+			<h3>{guessedWord ? "Correctly guessed" : "Failed"}</h3>
 			<h1>Correct Word: {correctWord}</h1>
-			{gameOver.guessedWord && (
-				<h3>You guessed in {currAttempt.attempt} attempts</h3>
-			)}
+			{guessedWord && <h3>You guessed in {attempt} attempts</h3>}
 		</div>
 	);
 }
