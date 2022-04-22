@@ -1,6 +1,6 @@
 # Wordle
 
-Second version of Wordle using Redux.
+Second version of Wordle using Redux.(In Progress)
 
 # Description
 
@@ -16,7 +16,8 @@ As any react application to run the program:
 First install node_modules using;
 
         npm install
-        
+
+
 Then run it like any react app.
 
         npm start
