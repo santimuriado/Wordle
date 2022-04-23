@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 function Letter({ letterPos, attemptVal }) {
 	const dispatch = useDispatch();
 	const { attempt } = useSelector((store) => store.currentAttempt);
-	const { board, correctWord } = useContext(AppContext);
+	const { correctWord } = useSelector((store) => store.correctWord);
+	const { board } = useContext(AppContext);
 	const letter = board[attemptVal][letterPos];
 
 	const correct = correctWord.toUpperCase()[letterPos] === letter;

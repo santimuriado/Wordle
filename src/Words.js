@@ -1,4 +1,5 @@
 import wordBank from "./wordle-bank.txt";
+import axios from "axios";
 
 export const boardDefault = [
 	["", "", "", "", ""],
@@ -13,8 +14,9 @@ export const generateWordSet = async () => {
 	let wordSet;
 	let todaysWord;
 
-	await fetch(wordBank)
-		.then((response) => response.text())
+	await axios
+		.get(wordBank)
+		.then((response) => response.data)
 		.then((result) => {
 			const wordArray = result.split("\n");
 			todaysWord =

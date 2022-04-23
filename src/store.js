@@ -4,6 +4,7 @@ import gameOverReducer from "./features/gameOverSlice";
 import disabledLettersReducer from "./features/disabledLettersSlice";
 import almostLettersReducer from "./features/almostLettersSlice";
 import correctLettersReducer from "./features/correctLettersSlice";
+import correctWordReducer from "./features/correctWordSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
 		disabledLetters: disabledLettersReducer,
 		almostLetters: almostLettersReducer,
 		correctLetters: correctLettersReducer,
+		correctWord: correctWordReducer,
 	},
 });

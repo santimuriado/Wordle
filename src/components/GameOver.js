@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { AppContext } from "../App";
 
 function GameOver() {
 	const { attempt } = useSelector((store) => store.currentAttempt);
 	const { guessedWord } = useSelector((store) => store.gameOver);
-	const { correctWord } = useContext(AppContext);
+	const { correctWord } = useSelector((store) => store.correctWord);
+	/* const { correctWord } = useContext(AppContext); */
 	return (
 		<div className="gameOver">
 			<h3>{guessedWord ? "Correctly guessed" : "Failed"}</h3>

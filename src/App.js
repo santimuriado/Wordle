@@ -1,11 +1,11 @@
-/* TODO: Make the gameOver stats a popup.
-         Finish converting to redux */
+/* TODO: Make the gameOver stats a popup.*/
 
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import { boardDefault, generateWordSet } from "./Words";
 import { React, useState, createContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import GameOver from "./components/GameOver";
 import {
 	increaseAttempt,
@@ -14,23 +14,22 @@ import {
 	resetLetterPos,
 } from "./features/currentAttemptSlice";
 import { setGameOver, setGuessedWord } from "./features/gameOverSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { setCorrectWord } from "./features/correctWordSlice";
 
 export const AppContext = createContext();
 
 function App() {
 	const { attempt, letterPos } = useSelector((store) => store.currentAttempt);
 	const { gameOver } = useSelector((store) => store.gameOver);
+	const { correctWord } = useSelector((store) => store.correctWord);
 	const dispatch = useDispatch();
 	const [board, setBoard] = useState(boardDefault);
 	const [wordSet, setWordSet] = useState(new Set());
-	const [correctWord, setCorrectWord] = useState("");
 
 	useEffect(() => {
 		generateWordSet().then((words) => {
 			setWordSet(words.wordSet);
-			setCorrectWord(words.todaysWord);
-			console.log(words.todaysWord);
+			dispatch(setCorrectWord(words.todaysWord));
 		});
 	}, []);
 
@@ -81,20 +80,9 @@ function App() {
 				value={{
 					board,
 					setBoard,
-					/* currAttempt,
-					setCurrAttempt, */
 					onSelectLetter,
 					onDelete,
 					onEnter,
-					correctWord,
-					/* disabledLetters,
-					setDisabledLetters, */
-					/* gameOver,
-					setGameOver, */
-					/* almostLetters,
-					setAlmostLetters,
-					correctLetters,
-					setCorrectLetters, */
 				}}>
 				<div className="game">
 					<Board />
