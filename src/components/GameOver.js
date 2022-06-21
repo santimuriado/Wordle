@@ -5,7 +5,6 @@ function GameOver() {
 	const { attempt } = useSelector((store) => store.currentAttempt);
 	const { guessedWord } = useSelector((store) => store.gameOver);
 	const { correctWord } = useSelector((store) => store.correctWord);
-	/* const { correctWord } = useContext(AppContext); */
 	return (
 		<div className="gameOver">
 			<h3>{guessedWord ? "Correctly guessed" : "Failed"}</h3>
