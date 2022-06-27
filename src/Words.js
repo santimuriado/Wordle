@@ -18,10 +18,13 @@ export const generateWordSet = async () => {
 		.get(wordBank)
 		.then((response) => response.data)
 		.then((result) => {
-			const wordArray = result.split("\n");
+			let wordArray = result.split(/[\r\n]/);
+			const results = wordArray.filter((element) => {
+				return element !== "";
+			});
 			todaysWord =
 				wordArray[Math.floor(Math.random() * wordArray.length)];
-			wordSet = new Set(wordArray);
+			wordSet = new Set(results);
 		});
 
 	return { wordSet, todaysWord };
