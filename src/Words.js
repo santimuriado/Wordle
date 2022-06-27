@@ -22,8 +22,7 @@ export const generateWordSet = async () => {
 			const results = wordArray.filter((element) => {
 				return element !== "";
 			});
-			todaysWord =
-				wordArray[Math.floor(Math.random() * wordArray.length)];
+			todaysWord = results[Math.floor(Math.random() * results.length)];
 			wordSet = new Set(results);
 		});
 
