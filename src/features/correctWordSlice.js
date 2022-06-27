@@ -10,7 +10,6 @@ const correctWordSlice = createSlice({
 	reducers: {
 		setCorrectWord: (state, action) => {
 			state.correctWord = action.payload;
-			console.log(action.payload);
 		},
 	},
 });
